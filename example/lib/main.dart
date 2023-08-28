@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({this.title = ''});
 
   final String title;
 
@@ -31,12 +31,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   FlutterPda _flutterPda = FlutterPda();
-  StreamSubscription _flutterPdaStateSubscription;
+  late StreamSubscription _flutterPdaStateSubscription;
 
   String _code = 'code';
-  bool _isSound;
-  bool _isVibrate;
-  String _sendMode;
+  bool _isSound = false;
+  bool _isVibrate = false;
+  String _sendMode = 'BROADCAST';
 
   @override
   void initState() {
@@ -102,38 +102,73 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Plugin example app'),
       ),
       body: Container(
-        child: Column(children: [
-          Row(children: [
-            Text('扫描声音'),
-            Container(child: Switch(value: _isSound, onChanged: _onSoundPlay)),
-          ],),
-          Row(children: [
-            Text('振动'),
-            Container(child: Switch(value: _isVibrate, onChanged: _onVibrate)),
-          ],),
-          Row(children: [
-            Text('条码发送方式'),
-          ],),
-          Column(children: [
-            Row(children: [
-              Radio(value: "FOCUS", groupValue: _sendMode, onChanged: _onSendMode),
-              Text('焦点录入'),
-            ],),
-            Row(children: [
-              Radio(value: "BROADCAST", groupValue: _sendMode, onChanged: _onSendMode),
-              Text('广播'),
-            ],),
-            Row(children: [
-              Radio(value: "EMUKEY", groupValue: _sendMode, onChanged: _onSendMode),
-              Text('模拟按键'),
-            ],),
-            Row(children: [
-              Radio(value: "CLIPBOARD", groupValue: _sendMode, onChanged: _onSendMode),
-              Text('剪切板'),
-            ],),
-          ],),
-          Padding(padding: EdgeInsets.only(top: 0), child: Text(_code),),
-        ],),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text('扫描声音'),
+                Container(
+                    child: Switch(value: _isSound, onChanged: _onSoundPlay)),
+              ],
+            ),
+            Row(
+              children: [
+                Text('振动'),
+                Container(
+                    child: Switch(value: _isVibrate, onChanged: _onVibrate)),
+              ],
+            ),
+            Row(
+              children: [
+                Text('条码发送方式'),
+              ],
+            ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Radio(
+                        value: "FOCUS",
+                        groupValue: _sendMode,
+                        onChanged: _onSendMode),
+                    Text('焦点录入'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio(
+                        value: "BROADCAST",
+                        groupValue: _sendMode,
+                        onChanged: _onSendMode),
+                    Text('广播'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio(
+                        value: "EMUKEY",
+                        groupValue: _sendMode,
+                        onChanged: _onSendMode),
+                    Text('模拟按键'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio(
+                        value: "CLIPBOARD",
+                        groupValue: _sendMode,
+                        onChanged: _onSendMode),
+                    Text('剪切板'),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 0),
+              child: Text(_code),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -142,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     super.dispose();
     // 取消PDA
-    if(_flutterPdaStateSubscription != null) {
+    if (_flutterPdaStateSubscription != null) {
       _flutterPdaStateSubscription.cancel();
     }
   }
