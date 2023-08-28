@@ -43,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // 监听PDA
     _flutterPdaStateSubscription = _flutterPda.onPdaStateChanged.listen((code) {
-      print("-------------------------$code");
       setState(() {
         _code = code;
       });
